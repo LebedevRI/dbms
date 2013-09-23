@@ -9,14 +9,15 @@ dbconnparams::dbconnparams(QWidget *parent) :
     ui(new Ui::dbconnparams)
 {
     ui->setupUi(this);
-    QSettings settings;
 
+    QSettings settings;
+    settings.beginGroup("DbConnection");
     ui->lineEdit->setText(settings.value("HostName", "localhost").toString());
     ui->lineEdit_2->setText(settings.value("Port", "3306").toString());
     ui->lineEdit_3->setText(settings.value("UserName", "dbms").toString());
     ui->lineEdit_4->setText(settings.value("Password", "dbms").toString());
     ui->lineEdit_5->setText(settings.value("DatabaseName", "dbms").toString());
-
+    settings.endGroup();
 }
 
 dbconnparams::~dbconnparams()

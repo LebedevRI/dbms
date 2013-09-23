@@ -43,6 +43,8 @@ MainWindow::MainWindow(QWidget *parent) :
     db.setPassword(settings.value("Password", "dbms").toString());
     db.setDatabaseName(settings.value("DatabaseName", "dbms").toString());
     bool ok = db.open();
+    qDebug() << ok;
+
     settings.endGroup();
 
     ui->setupUi(this);
