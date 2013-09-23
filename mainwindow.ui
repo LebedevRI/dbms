@@ -33,6 +33,7 @@
     <property name="title">
      <string>Tools</string>
     </property>
+    <addaction name="actionDB_Connection_Params"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
@@ -46,14 +47,14 @@
    </attribute>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="actionMySQL_Connection_params">
-   <property name="text">
-    <string>MySQL Connection params</string>
-   </property>
-  </action>
   <action name="actionExit">
    <property name="text">
     <string>Exit</string>
+   </property>
+  </action>
+  <action name="actionDB_Connection_Params">
+   <property name="text">
+    <string>DB Connection Params</string>
    </property>
   </action>
  </widget>

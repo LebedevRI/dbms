@@ -4,6 +4,10 @@
 #include <QMainWindow>
 #include <QSettings>
 #include <QCloseEvent>
+#include <QtSql>
+#include <QSqlDatabase>
+
+#include "dbconnparams.h"
 
 namespace Ui {
 class MainWindow;
@@ -16,16 +20,17 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-    QSettings settings;
+    QSqlDatabase db;
 
 protected:
     void closeEvent(QCloseEvent *event);
 
 private slots:
-    void on_actionMySQL_Connection_params_triggered();
+    void on_actionDB_Connection_Params_triggered();
 
 private:
     Ui::MainWindow *ui;
+
     void readSettings();
     void writeSettings();
     bool reallyQuit();

@@ -13,8 +13,11 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    dbconnparams.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    dbconnparams.h
 
-FORMS    += mainwindow.ui
+FORMS    += mainwindow.ui \
+    dbconnparams.ui
