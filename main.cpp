@@ -4,7 +4,7 @@
 #include "mainwindow.h"
 
 int main(int argc, char *argv[])
-{   
+{
     QApplication a(argc, argv);
     a.setOrganizationName("LRI");
     a.setApplicationName("dbms-v5");
@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     w.show();
 
     QSettings settings;
+    settings.setValue("wrongway", QString(""));
     settings.beginGroup("DbConnection");
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName(settings.value("HostName", "localhost").toString());

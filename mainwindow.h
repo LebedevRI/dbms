@@ -34,6 +34,8 @@ private slots:
     void on_actionView_3_triggered();
     void on_actionAdd_new_expert_triggered();
 
+    void on_tableView_doubleClicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
 

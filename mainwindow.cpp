@@ -162,3 +162,18 @@ void MainWindow::on_actionCheck_fix_data_triggered()
     model->submitAll();
     QSqlDatabase::database().commit();
 }
+
+void MainWindow::on_tableView_doubleClicked(const QModelIndex &index)
+{
+    int row = index.row();
+    const QAbstractItemModel * model = index.model();
+
+    QSettings settings;
+    settings.setValue("wrongway", model->data(model->index(row, 0), Qt::DisplayRole));
+
+    addnewexpert *ane = new addnewexpert(this);
+
+    ane->show();
+    ane->raise();
+    ane->activateWindow();
+}
