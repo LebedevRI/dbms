@@ -2,6 +2,8 @@
 #include <QCloseEvent>
 #include <QtSql>
 #include <QSqlDatabase>
+#include <QSqlQuery>
+#include <QSqlQueryModel>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -34,7 +36,7 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     readSettings();
 
-    QSettings settings;
+    /*QSettings settings;
     settings.beginGroup("DbConnection");
     db = QSqlDatabase::addDatabase("QMYSQL", "mydb");
     db.setHostName(settings.value("HostName", "localhost").toString());
@@ -45,7 +47,7 @@ MainWindow::MainWindow(QWidget *parent) :
     bool ok = db.open();
     qDebug() << ok;
 
-    settings.endGroup();
+    settings.endGroup();*/
 
     ui->setupUi(this);
 }
@@ -87,4 +89,56 @@ void MainWindow::on_actionDB_Connection_Params_triggered()
     dcp->show();
     dcp->raise();
     dcp->activateWindow();
+}
+
+void MainWindow::on_actionCheck_fix_data_triggered()
+{
+    QSettings settings;
+    settings.beginGroup("DbConnection");
+    db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName(settings.value("HostName", "localhost").toString());
+    db.setPort(settings.value("Port", "3306").toInt());
+    db.setUserName(settings.value("UserName", "dbms").toString());
+    db.setPassword(settings.value("Password", "dbms").toString());
+    db.setDatabaseName(settings.value("DatabaseName", "dbms").toString());
+    settings.endGroup();
+    bool ok = db.open();
+    qDebug() << ok;
+
+    QSqlDatabase::database().transaction();
+    QSqlQuery query;
+
+    //Update ALL regions in expert table
+    //query.exec("UPDATE expert,reg_obl_city SET expert.region=reg_obl_city.region WHERE expert.city=reg_obl_city.city;");
+
+    //Only fix missing
+    query.exec("UPDATE expert,reg_obl_city SET expert.region=reg_obl_city.region WHERE expert.region="" AND expert.city=reg_obl_city.city;");
+
+    QSqlTableModel *model = new QSqlTableModel(0, db);
+    model->setTable("expert");
+    model->setFilter("kod = \"\"");
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    model->select();
+    for(auto i=0; i<model->rowCount(); i++)
+    {
+        QSqlRecord record = model->record(i);
+        int recId = record.value(record.indexOf("id")).toInt();
+
+        QSqlQuery query_mid;
+        query_mid.prepare("SELECT * FROM expert WHERE (id = (SELECT MAX(`id`) FROM expert WHERE `id` <:id) OR `id` = (SELECT MIN(`id`) FROM expert WHERE `id` >:id));");
+        query_mid.bindValue(":id", recId);
+        query_mid.exec();
+
+        query_mid.first();
+        int prevKod = query_mid.value(query_mid.record().indexOf("kod")).toInt();
+        query_mid.next();
+        int nextKod = query_mid.value(query_mid.record().indexOf("kod")).toInt();
+
+        Q_ASSERT((prevKod < nextKod) && ((prevKod+2) == nextKod));
+
+        record.setValue(record.indexOf("kod"), prevKod+1);
+        model->setRecord(i, record);
+    }
+    model->submitAll();
+    QSqlDatabase::database().commit();
 }

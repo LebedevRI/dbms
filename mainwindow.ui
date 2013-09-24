@@ -34,6 +34,7 @@
      <string>Tools</string>
     </property>
     <addaction name="actionDB_Connection_Params"/>
+    <addaction name="actionCheck_fix_data"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuTools"/>
@@ -55,6 +56,11 @@
   <action name="actionDB_Connection_Params">
    <property name="text">
     <string>DB Connection Params</string>
+   </property>
+  </action>
+  <action name="actionCheck_fix_data">
+   <property name="text">
+    <string>Check &amp;&amp; fix data</string>
    </property>
   </action>
  </widget>
