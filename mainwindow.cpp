@@ -34,22 +34,29 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+    ui->setupUi(this);
     readSettings();
 
-    /*QSettings settings;
+    QSettings settings;
     settings.beginGroup("DbConnection");
-    db = QSqlDatabase::addDatabase("QMYSQL", "mydb");
+    db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName(settings.value("HostName", "localhost").toString());
     db.setPort(settings.value("Port", "3306").toInt());
     db.setUserName(settings.value("UserName", "dbms").toString());
     db.setPassword(settings.value("Password", "dbms").toString());
     db.setDatabaseName(settings.value("DatabaseName", "dbms").toString());
+    settings.endGroup();
     bool ok = db.open();
     qDebug() << ok;
 
-    settings.endGroup();*/
+    QSqlTableModel *model = new QSqlTableModel;
+    model->setTable("reg_obl_city");
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    model->select();
+    model->removeColumn(0); // don't show the ID
+    ui->tableView->setModel(model);
 
-    ui->setupUi(this);
+    db.close();
 }
 
 bool MainWindow::reallyQuit()
@@ -78,7 +85,6 @@ void MainWindow::closeEvent(QCloseEvent *event)
 
 MainWindow::~MainWindow()
 {
-    db.close();
     delete ui;
 }
 
@@ -93,18 +99,7 @@ void MainWindow::on_actionDB_Connection_Params_triggered()
 
 void MainWindow::on_actionCheck_fix_data_triggered()
 {
-    QSettings settings;
-    settings.beginGroup("DbConnection");
-    db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName(settings.value("HostName", "localhost").toString());
-    db.setPort(settings.value("Port", "3306").toInt());
-    db.setUserName(settings.value("UserName", "dbms").toString());
-    db.setPassword(settings.value("Password", "dbms").toString());
-    db.setDatabaseName(settings.value("DatabaseName", "dbms").toString());
-    settings.endGroup();
-    bool ok = db.open();
-    qDebug() << ok;
-
+    QSqlDatabase db = QSqlDatabase::database();
     QSqlDatabase::database().transaction();
     QSqlQuery query;
 
@@ -141,4 +136,5 @@ void MainWindow::on_actionCheck_fix_data_triggered()
     }
     model->submitAll();
     QSqlDatabase::database().commit();
+    db.close();
 }
