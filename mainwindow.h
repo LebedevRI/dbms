@@ -28,6 +28,9 @@ protected:
 private slots:
     void on_actionDB_Connection_Params_triggered();
     void on_actionCheck_fix_data_triggered();
+    void on_actionView_triggered();
+    void on_actionView_2_triggered();
+    void on_actionView_3_triggered();
 
 private:
     Ui::MainWindow *ui;

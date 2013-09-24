@@ -36,7 +36,62 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     readSettings();
+}
 
+void MainWindow::on_actionView_triggered()
+{
+    QSettings settings;
+    settings.beginGroup("DbConnection");
+    db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName(settings.value("HostName", "localhost").toString());
+    db.setPort(settings.value("Port", "3306").toInt());
+    db.setUserName(settings.value("UserName", "dbms").toString());
+    db.setPassword(settings.value("Password", "dbms").toString());
+    db.setDatabaseName(settings.value("DatabaseName", "dbms").toString());
+    settings.endGroup();
+    bool ok = db.open();
+    qDebug() << ok;
+
+    QSqlTableModel *model = new QSqlTableModel;
+    model->setTable("expert");
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    model->select();
+    model->removeColumn(0); // don't show the ID
+    ui->tableView->setModel(model);
+    ui->tableView->resizeColumnsToContents();
+    ui->tableView->resizeRowsToContents();
+
+    db.close();
+}
+
+void MainWindow::on_actionView_2_triggered()
+{
+    QSettings settings;
+    settings.beginGroup("DbConnection");
+    db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName(settings.value("HostName", "localhost").toString());
+    db.setPort(settings.value("Port", "3306").toInt());
+    db.setUserName(settings.value("UserName", "dbms").toString());
+    db.setPassword(settings.value("Password", "dbms").toString());
+    db.setDatabaseName(settings.value("DatabaseName", "dbms").toString());
+    settings.endGroup();
+    bool ok = db.open();
+    qDebug() << ok;
+
+    QSqlTableModel *model = new QSqlTableModel;
+    model->setTable("grntirub");
+    model->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    model->select();
+    model->removeColumn(0); // don't show the ID
+    ui->tableView->setModel(model);
+    ui->tableView->resizeColumnsToContents();
+    ui->tableView->resizeRowsToContents();
+
+    db.close();
+}
+
+void MainWindow::on_actionView_3_triggered()
+{
     QSettings settings;
     settings.beginGroup("DbConnection");
     db = QSqlDatabase::addDatabase("QMYSQL");

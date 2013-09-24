@@ -55,7 +55,34 @@
     <addaction name="actionDB_Connection_Params"/>
     <addaction name="actionCheck_fix_data"/>
    </widget>
+   <widget class="QMenu" name="menuTables">
+    <property name="title">
+     <string>Tables</string>
+    </property>
+    <widget class="QMenu" name="menuExperts">
+     <property name="title">
+      <string>Experts</string>
+     </property>
+     <addaction name="actionView"/>
+    </widget>
+    <widget class="QMenu" name="menuGrntirub">
+     <property name="title">
+      <string>grntirub</string>
+     </property>
+     <addaction name="actionView_2"/>
+    </widget>
+    <widget class="QMenu" name="menuReg_obl_city">
+     <property name="title">
+      <string>reg_obl_city</string>
+     </property>
+     <addaction name="actionView_3"/>
+    </widget>
+    <addaction name="menuExperts"/>
+    <addaction name="menuGrntirub"/>
+    <addaction name="menuReg_obl_city"/>
+   </widget>
    <addaction name="menuFile"/>
+   <addaction name="menuTables"/>
    <addaction name="menuTools"/>
   </widget>
   <widget class="QToolBar" name="mainToolBar">
@@ -80,6 +107,21 @@
   <action name="actionCheck_fix_data">
    <property name="text">
     <string>Check &amp;&amp; fix data</string>
+   </property>
+  </action>
+  <action name="actionView">
+   <property name="text">
+    <string>View</string>
+   </property>
+  </action>
+  <action name="actionView_2">
+   <property name="text">
+    <string>View</string>
+   </property>
+  </action>
+  <action name="actionView_3">
+   <property name="text">
+    <string>View</string>
    </property>
   </action>
  </widget>
