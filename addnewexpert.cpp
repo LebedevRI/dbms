@@ -60,6 +60,8 @@ addnewexpert::addnewexpert(QWidget *parent) :
 
 addnewexpert::~addnewexpert()
 {
+    QSettings settings;
+    settings.setValue("wrongway", QString(""));
     delete ui;
 }
 
@@ -70,6 +72,20 @@ void addnewexpert::on_comboBox_currentIndexChanged(const QString &arg1)
 
     ui->comboBox_2->setModel(model_city);
     ui->comboBox_2->setModelColumn(0);
+}
+
+bool addnewexpert::reallyQuit()
+{
+    QMessageBox::StandardButton ret;
+    ret = QMessageBox::warning(this, tr("Application"),
+                               tr("Do you really want to delete expert?"),
+                               QMessageBox::Yes | QMessageBox::Cancel);
+    if (ret == QMessageBox::Yes)
+        return true;
+    else if (ret == QMessageBox::Cancel)
+        return false;
+
+    return false;
 }
 
 void addnewexpert::accept()
@@ -95,16 +111,18 @@ void addnewexpert::accept()
     } else {
         if(ui->checkBox->isChecked())
         {
-            QSqlDatabase::database().transaction();
-            QSqlQuery query;
-            query.exec(QString("DELETE FROM expert WHERE expert.kod='%1';")
-                       .arg(settings.value("wrongway").toString()));
-            QSqlDatabase::database().commit();
+            if (reallyQuit()) {
+                QSqlDatabase::database().transaction();
+                QSqlQuery query;
+                query.exec(QString("DELETE FROM expert WHERE expert.kod='%1';")
+                           .arg(settings.value("wrongway").toString()));
+                QSqlDatabase::database().commit();
 
-            qDebug() << "error = " << QSqlDatabase::database().lastError().text();
-            settings.setValue("wrongway", QString(""));
-            this->setResult(QDialog::Accepted);
-            this->close();
+                qDebug() << "error = " << QSqlDatabase::database().lastError().text();
+                settings.setValue("wrongway", QString(""));
+                this->setResult(QDialog::Accepted);
+                this->close();
+            }
         } else {
             QSqlDatabase::database().transaction();
             QSqlQuery query;
