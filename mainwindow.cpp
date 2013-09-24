@@ -55,6 +55,8 @@ MainWindow::MainWindow(QWidget *parent) :
     model->select();
     model->removeColumn(0); // don't show the ID
     ui->tableView->setModel(model);
+    ui->tableView->resizeColumnsToContents();
+    ui->tableView->resizeRowsToContents();
 
     db.close();
 }
