@@ -29,6 +29,12 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
+      <property name="alternatingRowColors">
+       <bool>true</bool>
+      </property>
+      <property name="sortingEnabled">
+       <bool>true</bool>
+      </property>
      </widget>
     </item>
    </layout>
@@ -64,6 +70,7 @@
       <string>Experts</string>
      </property>
      <addaction name="actionView"/>
+     <addaction name="actionAdd_new_expert"/>
     </widget>
     <widget class="QMenu" name="menuGrntirub">
      <property name="title">
@@ -122,6 +129,11 @@
   <action name="actionView_3">
    <property name="text">
     <string>View</string>
+   </property>
+  </action>
+  <action name="actionAdd_new_expert">
+   <property name="text">
+    <string>Add new expert</string>
    </property>
   </action>
  </widget>

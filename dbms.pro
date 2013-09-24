@@ -14,10 +14,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    dbconnparams.cpp
+    dbconnparams.cpp \
+    addnewexpert.cpp
 
 HEADERS  += mainwindow.h \
-    dbconnparams.h
+    dbconnparams.h \
+    addnewexpert.h
 
 FORMS    += mainwindow.ui \
-    dbconnparams.ui
+    dbconnparams.ui \
+    addnewexpert.ui

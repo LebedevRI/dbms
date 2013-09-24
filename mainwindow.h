@@ -8,6 +8,7 @@
 #include <QSqlDatabase>
 
 #include "dbconnparams.h"
+#include "addnewexpert.h"
 
 namespace Ui {
 class MainWindow;
@@ -31,6 +32,7 @@ private slots:
     void on_actionView_triggered();
     void on_actionView_2_triggered();
     void on_actionView_3_triggered();
+    void on_actionAdd_new_expert_triggered();
 
 private:
     Ui::MainWindow *ui;

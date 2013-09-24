@@ -12,5 +12,17 @@ int main(int argc, char *argv[])
     MainWindow w;
     w.show();
 
+    QSettings settings;
+    settings.beginGroup("DbConnection");
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    db.setHostName(settings.value("HostName", "localhost").toString());
+    db.setPort(settings.value("Port", "3306").toInt());
+    db.setUserName(settings.value("UserName", "dbms").toString());
+    db.setPassword(settings.value("Password", "dbms").toString());
+    db.setDatabaseName(settings.value("DatabaseName", "dbms").toString());
+    settings.endGroup();
+    bool ok = db.open();
+    qDebug() << ok;
+
     return a.exec();
 }

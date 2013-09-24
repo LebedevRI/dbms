@@ -9,6 +9,7 @@
 #include "ui_mainwindow.h"
 #include "ui_dbconnparams.h"
 #include "dbconnparams.h"
+#include "addnewexpert.h"
 
 void MainWindow::writeSettings()
 {
@@ -61,7 +62,7 @@ void MainWindow::on_actionView_triggered()
     ui->tableView->resizeColumnsToContents();
     ui->tableView->resizeRowsToContents();
 
-    db.close();
+    //db.close();
 }
 
 void MainWindow::on_actionView_2_triggered()
@@ -87,7 +88,7 @@ void MainWindow::on_actionView_2_triggered()
     ui->tableView->resizeColumnsToContents();
     ui->tableView->resizeRowsToContents();
 
-    db.close();
+    //db.close();
 }
 
 void MainWindow::on_actionView_3_triggered()
@@ -113,7 +114,16 @@ void MainWindow::on_actionView_3_triggered()
     ui->tableView->resizeColumnsToContents();
     ui->tableView->resizeRowsToContents();
 
-    db.close();
+    //db.close();
+}
+
+void MainWindow::on_actionAdd_new_expert_triggered()
+{
+    addnewexpert *ane = new addnewexpert(this);
+
+    ane->show();
+    ane->raise();
+    ane->activateWindow();
 }
 
 bool MainWindow::reallyQuit()
@@ -193,5 +203,4 @@ void MainWindow::on_actionCheck_fix_data_triggered()
     }
     model->submitAll();
     QSqlDatabase::database().commit();
-    db.close();
 }
