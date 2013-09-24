@@ -118,7 +118,6 @@ void addnewexpert::accept()
                            .arg(settings.value("wrongway").toString()));
                 QSqlDatabase::database().commit();
 
-                qDebug() << "error = " << QSqlDatabase::database().lastError().text();
                 settings.setValue("wrongway", QString(""));
                 this->setResult(QDialog::Accepted);
                 this->close();
