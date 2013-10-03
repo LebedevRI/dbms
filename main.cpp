@@ -26,4 +26,6 @@ int main(int argc, char *argv[])
     qDebug() << ok;
 
     return a.exec();
+
+    db.close();
 }

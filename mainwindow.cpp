@@ -77,6 +77,9 @@ void MainWindow::on_actionView_3_triggered()
 
 void MainWindow::on_actionAdd_new_expert_triggered()
 {
+    QSettings settings;
+    settings.setValue("wrongway", false);
+
     addnewexpert *ane = new addnewexpert(this);
 
     ane->show();

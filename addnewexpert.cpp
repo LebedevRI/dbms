@@ -16,7 +16,7 @@ addnewexpert::addnewexpert(QWidget *parent) :
     ui->setupUi(this);
     QSettings settings;
 
-    if(settings.value("wrongway").toString() == "") {
+    if(!settings.value("wrongway").toBool()) {
         ui->checkBox->hide();
 
         QSqlQuery query;
