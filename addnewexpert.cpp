@@ -16,6 +16,18 @@ addnewexpert::addnewexpert(QWidget *parent) :
     ui->setupUi(this);
     QSettings settings;
 
+    QSqlQueryModel *model_region = new QSqlQueryModel;
+    model_region->setQuery("SELECT DISTINCT reg_obl_city.region FROM reg_obl_city ORDER BY reg_obl_city.region ASC");
+
+    ui->comboBox->setModel(model_region);
+    ui->comboBox->setModelColumn(0);
+
+    QSqlQueryModel *model_city = new QSqlQueryModel;
+    model_city->setQuery("SELECT reg_obl_city.city FROM reg_obl_city ORDER BY reg_obl_city.city ASC");
+
+    ui->comboBox_2->setModel(model_city);
+    ui->comboBox_2->setModelColumn(0);
+
     if(!settings.value("wrongway").toBool()) {
         ui->checkBox->hide();
 
@@ -30,38 +42,32 @@ addnewexpert::addnewexpert(QWidget *parent) :
         ui->dateEdit->setDate(QDate::currentDate());
     } else {
         QSqlQuery query;
-        query.prepare(QString("SELECT * FROM expert WHERE kod='%1';").arg(settings.value("wrongway").toString()));
+        query.prepare("SELECT * FROM expert WHERE kod=:kod;");
+        query.bindValue(":kod", settings.value("wrongway").toInt());
         query.exec();
         query.first();
 
-        ui->lineEdit->setText(QString("%1").arg(query.value(query.record().indexOf("kod")).toString()));
-        ui->lineEdit_2->setText(QString("%1").arg(query.value(query.record().indexOf("name")).toString()));
-        ui->comboBox->setCurrentIndex(ui->comboBox->findData(QString("%1").arg(query.value(query.record().indexOf("region")).toString())));
-        ui->comboBox_2->setCurrentIndex(ui->comboBox->findData(QString("%1").arg(query.value(query.record().indexOf("city")).toString())));
-        ui->lineEdit_3->setText(QString("%1").arg(query.value(query.record().indexOf("grnti")).toString()));
-        ui->lineEdit_4->setText(QString("%1").arg(query.value(query.record().indexOf("key_words")).toString()));
+        ui->lineEdit->setText(query.value(query.record().indexOf("kod")).toString());
+        ui->lineEdit_2->setText(query.value(query.record().indexOf("name")).toString());
+
+        int index = ui->comboBox->findText(query.value(query.record().indexOf("region")).toString());
+        ui->comboBox->setCurrentIndex(index);
+
+        int index2 = ui->comboBox_2->findText(query.value(query.record().indexOf("city")).toString());
+        ui->comboBox_2->setCurrentIndex(index2);
+
+        ui->lineEdit_3->setText(query.value(query.record().indexOf("grnti")).toString());
+        ui->lineEdit_4->setText(query.value(query.record().indexOf("key_words")).toString());
 
         ui->spinBox->setValue(query.value(query.record().indexOf("take_part")).toInt());
         ui->dateEdit->setDate(query.value(query.record().indexOf("input_date")).toDate());
     }
-
-    QSqlQueryModel *model_region = new QSqlQueryModel;
-    model_region->setQuery("SELECT DISTINCT reg_obl_city.region FROM reg_obl_city ORDER BY reg_obl_city.region ASC");
-
-    ui->comboBox->setModel(model_region);
-    ui->comboBox->setModelColumn(0);
-
-    QSqlQueryModel *model_city = new QSqlQueryModel;
-    model_city->setQuery("SELECT reg_obl_city.city FROM reg_obl_city ORDER BY reg_obl_city.city ASC");
-
-    ui->comboBox_2->setModel(model_city);
-    ui->comboBox_2->setModelColumn(0);
 }
 
 addnewexpert::~addnewexpert()
 {
     QSettings settings;
-    settings.setValue("wrongway", QString(""));
+    settings.setValue("wrongway", false);
     delete ui;
 }
 
