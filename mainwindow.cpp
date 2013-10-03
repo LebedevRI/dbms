@@ -120,6 +120,7 @@ void MainWindow::on_actionDB_Connection_Params_triggered()
 {
     dbconnparams *dcp = new dbconnparams(this);
 
+    dcp->setModal(true);
     dcp->show();
     dcp->raise();
     dcp->activateWindow();
