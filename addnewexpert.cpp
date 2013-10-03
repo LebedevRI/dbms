@@ -17,13 +17,13 @@ addnewexpert::addnewexpert(QWidget *parent) :
     QSettings settings;
 
     QSqlQueryModel *model_region = new QSqlQueryModel;
-    model_region->setQuery("SELECT DISTINCT reg_obl_city.region FROM reg_obl_city ORDER BY reg_obl_city.region ASC");
+    model_region->setQuery("SELECT DISTINCT reg_obl_city.region FROM reg_obl_city ORDER BY reg_obl_city.region ASC;");
 
     ui->comboBox->setModel(model_region);
     ui->comboBox->setModelColumn(0);
 
     QSqlQueryModel *model_city = new QSqlQueryModel;
-    model_city->setQuery("SELECT reg_obl_city.city FROM reg_obl_city ORDER BY reg_obl_city.city ASC");
+    model_city->setQuery("SELECT reg_obl_city.city FROM reg_obl_city ORDER BY reg_obl_city.city ASC;");
 
     ui->comboBox_2->setModel(model_city);
     ui->comboBox_2->setModelColumn(0);
@@ -101,15 +101,16 @@ void addnewexpert::accept()
     {
         QSqlDatabase::database().transaction();
         QSqlQuery query;
-        query.exec(QString("INSERT INTO expert VALUES(NULL,'%1','%2','%3','%4','%5','%6','%7','%8');")
-                   .arg(ui->lineEdit->text())
-                   .arg(ui->lineEdit_2->text())
-                   .arg(ui->comboBox->currentText())
-                   .arg(ui->comboBox_2->currentText())
-                   .arg(ui->lineEdit_3->text())
-                   .arg(ui->lineEdit_4->text())
-                   .arg(ui->spinBox->value())
-                   .arg(ui->dateEdit->date().toString("yyyy-MM-dd")));
+        query.prepare("INSERT INTO expert VALUES(NULL,:kod,:name,:region,:city,:grnti,:key_words,:take_part,:input_date);");
+        query.bindValue(":kod", ui->lineEdit->text());
+        query.bindValue(":name", ui->lineEdit_2->text());
+        query.bindValue(":region", ui->comboBox->currentText());
+        query.bindValue(":city", ui->comboBox_2->currentText());
+        query.bindValue(":grnti", ui->lineEdit_3->text());
+        query.bindValue(":key_words", ui->lineEdit_4->text());
+        query.bindValue(":take_part", ui->spinBox->value());
+        query.bindValue(":input_date", ui->dateEdit->date().toString("yyyy-MM-dd"));
+        query.exec();
         QSqlDatabase::database().commit();
 
         this->setResult(QDialog::Accepted);
@@ -120,30 +121,32 @@ void addnewexpert::accept()
             if (reallyQuit()) {
                 QSqlDatabase::database().transaction();
                 QSqlQuery query;
-                query.exec(QString("DELETE FROM expert WHERE expert.kod='%1';")
-                           .arg(settings.value("wrongway").toString()));
+                query.prepare("DELETE FROM expert WHERE expert.kod=:kod");
+                query.bindValue(":kod", settings.value("wrongway").toString());
+                query.exec();
                 QSqlDatabase::database().commit();
 
-                settings.setValue("wrongway", QString(""));
+                settings.setValue("wrongway", false);
                 this->setResult(QDialog::Accepted);
                 this->close();
             }
         } else {
             QSqlDatabase::database().transaction();
             QSqlQuery query;
-            query.exec(QString("UPDATE expert SET kod='%1',name='%2',region='%3',city='%4',grnti='%5',key_words='%6',take_part='%7',input_date='%8' WHERE kod='%9';")
-                       .arg(ui->lineEdit->text())
-                       .arg(ui->lineEdit_2->text())
-                       .arg(ui->comboBox->currentText())
-                       .arg(ui->comboBox_2->currentText())
-                       .arg(ui->lineEdit_3->text())
-                       .arg(ui->lineEdit_4->text())
-                       .arg(ui->spinBox->value())
-                       .arg(ui->dateEdit->date().toString("yyyy-MM-dd"))
-                       .arg(settings.value("wrongway").toString()));
+            query.prepare("UPDATE expert SET kod=:kod,name=:name,region=:region,city=:city,grnti=:grnti,key_words=:key_words,take_part=:take_part,input_date=:input_date WHERE kod=:kod_where;");
+            query.bindValue(":kod", ui->lineEdit->text());
+            query.bindValue(":name", ui->lineEdit_2->text());
+            query.bindValue(":region", ui->comboBox->currentText());
+            query.bindValue(":city", ui->comboBox_2->currentText());
+            query.bindValue(":grnti", ui->lineEdit_3->text());
+            query.bindValue(":key_words", ui->lineEdit_4->text());
+            query.bindValue(":take_part", ui->spinBox->value());
+            query.bindValue(":input_date", ui->dateEdit->date().toString("yyyy-MM-dd"));
+            query.bindValue(":kod_where", settings.value("wrongway").toString());
+            query.exec();
             QSqlDatabase::database().commit();
 
-            settings.setValue("wrongway", QString(""));
+            settings.setValue("wrongway", false);
             this->setResult(QDialog::Accepted);
             this->close();
         };

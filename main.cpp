@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
     w.show();
 
     QSettings settings;
-    settings.setValue("wrongway", QString(""));
+    settings.setValue("wrongway", false);
     settings.beginGroup("DbConnection");
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     db.setHostName(settings.value("HostName", "localhost").toString());
