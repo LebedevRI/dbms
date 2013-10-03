@@ -37,6 +37,38 @@ void dbconnparams::accept()
     settings.setValue("DatabaseName", ui->lineEdit_5->text());
     settings.endGroup();
 
-    this->setResult(QDialog::Accepted);
-    this->close();
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    settings.beginGroup("DbConnection");
+    db.setHostName(settings.value("HostName").toString());
+    db.setPort(settings.value("Port").toInt());
+    db.setUserName(settings.value("UserName").toString());
+    db.setPassword(settings.value("Password").toString());
+    db.setDatabaseName(settings.value("DatabaseName").toString());
+    settings.endGroup();
+    bool ok = db.open();
+
+    if(ok) {
+        this->setResult(QDialog::Accepted);
+        this->close();
+    };
+}
+
+void dbconnparams::reject()
+{
+    QSettings settings;
+
+    QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
+    settings.beginGroup("DbConnection");
+    db.setHostName(settings.value("HostName").toString());
+    db.setPort(settings.value("Port").toInt());
+    db.setUserName(settings.value("UserName").toString());
+    db.setPassword(settings.value("Password").toString());
+    db.setDatabaseName(settings.value("DatabaseName").toString());
+    settings.endGroup();
+    bool ok = db.open();
+
+    if(ok) {
+        this->setResult(QDialog::Rejected);
+        this->close();
+    };
 }

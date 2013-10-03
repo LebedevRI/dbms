@@ -26,8 +26,9 @@ public:
 protected:
     void closeEvent(QCloseEvent *event);
 
-private slots:
+public slots:
     void on_actionDB_Connection_Params_triggered();
+private slots:
     void on_actionCheck_fix_data_triggered();
     void on_actionView_triggered();
     void on_actionView_2_triggered();

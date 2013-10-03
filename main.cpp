@@ -23,6 +23,9 @@ int main(int argc, char *argv[])
     db.setDatabaseName(settings.value("DatabaseName", "dbms").toString());
     settings.endGroup();
     bool ok = db.open();
+
+    if(!ok) w.on_actionDB_Connection_Params_triggered();
+
     qDebug() << ok;
 
     return a.exec();

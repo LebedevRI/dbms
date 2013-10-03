@@ -21,6 +21,7 @@ private:
 
 private slots:
     void accept();
+    void reject();
 };
 
 #endif // DBCONNPARAMS_H
