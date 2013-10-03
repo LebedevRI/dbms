@@ -16,11 +16,11 @@ int main(int argc, char *argv[])
     settings.setValue("wrongway", false);
     settings.beginGroup("DbConnection");
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
-    db.setHostName(settings.value("HostName", "localhost").toString());
-    db.setPort(settings.value("Port", "3306").toInt());
-    db.setUserName(settings.value("UserName", "dbms").toString());
-    db.setPassword(settings.value("Password", "dbms").toString());
-    db.setDatabaseName(settings.value("DatabaseName", "dbms").toString());
+    db.setHostName(settings.value("HostName").toString());
+    db.setPort(settings.value("Port").toInt());
+    db.setUserName(settings.value("UserName").toString());
+    db.setPassword(settings.value("Password").toString());
+    db.setDatabaseName(settings.value("DatabaseName").toString());
     settings.endGroup();
     bool ok = db.open();
 
