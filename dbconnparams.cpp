@@ -50,12 +50,13 @@ void dbconnparams::accept()
     if(ok) {
         this->setResult(QDialog::Accepted);
         this->close();
-    };
+        this->done(0);
+    }
 }
 
 void dbconnparams::reject()
 {
-    QSettings settings;
+/*    QSettings settings;
 
     QSqlDatabase db = QSqlDatabase::addDatabase("QMYSQL");
     settings.beginGroup("DbConnection");
@@ -65,10 +66,11 @@ void dbconnparams::reject()
     db.setPassword(settings.value("Password").toString());
     db.setDatabaseName(settings.value("DatabaseName").toString());
     settings.endGroup();
-    bool ok = db.open();
+    db.open();*/
 
-    if(ok) {
+//    if(ok) {
         this->setResult(QDialog::Rejected);
         this->close();
-    };
+        this->done(0);
+//    };
 }
