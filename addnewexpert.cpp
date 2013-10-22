@@ -59,7 +59,6 @@ addnewexpert::addnewexpert(QWidget *parent) :
         ui->lineEdit_3->setText(query.value(query.record().indexOf("grnti")).toString());
         ui->lineEdit_4->setText(query.value(query.record().indexOf("key_words")).toString());
 
-        ui->spinBox->setValue(query.value(query.record().indexOf("take_part")).toInt());
         ui->dateEdit->setDate(query.value(query.record().indexOf("input_date")).toDate());
     }
 }
@@ -108,7 +107,6 @@ void addnewexpert::accept()
         query.bindValue(":city", ui->comboBox_2->currentText());
         query.bindValue(":grnti", ui->lineEdit_3->text());
         query.bindValue(":key_words", ui->lineEdit_4->text());
-        query.bindValue(":take_part", ui->spinBox->value());
         query.bindValue(":input_date", ui->dateEdit->date().toString("yyyy-MM-dd"));
         query.exec();
         QSqlDatabase::database().commit();
@@ -140,7 +138,6 @@ void addnewexpert::accept()
             query.bindValue(":city", ui->comboBox_2->currentText());
             query.bindValue(":grnti", ui->lineEdit_3->text());
             query.bindValue(":key_words", ui->lineEdit_4->text());
-            query.bindValue(":take_part", ui->spinBox->value());
             query.bindValue(":input_date", ui->dateEdit->date().toString("yyyy-MM-dd"));
             query.bindValue(":kod_where", settings.value("wrongway").toString());
             query.exec();
