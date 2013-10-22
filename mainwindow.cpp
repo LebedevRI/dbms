@@ -38,6 +38,19 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     readSettings();
+
+    QSqlQueryModel *model_region = new QSqlQueryModel;
+    model_region->setQuery("SELECT DISTINCT reg_obl_city.region FROM reg_obl_city ORDER BY reg_obl_city.region ASC;");
+
+    ui->comboBox->setModel(model_region);
+    ui->comboBox->setModelColumn(0);
+
+    QSqlQueryModel *model_city = new QSqlQueryModel;
+    model_city->setQuery("SELECT reg_obl_city.city FROM reg_obl_city ORDER BY reg_obl_city.city ASC;");
+
+    ui->comboBox_2->setModel(model_city);
+    ui->comboBox_2->setModelColumn(0);
+
 }
 
 void MainWindow::on_actionView_triggered()
@@ -225,4 +238,13 @@ void MainWindow::on_tableView_doubleClicked(const QModelIndex &index)
 void MainWindow::on_filter_textChanged(const QString &arg1)
 {
     dynamic_cast<QSortFilterProxyModel*>(ui->tableView->model())->setFilterRegExp(QRegExp(ui->filter->text(), Qt::CaseInsensitive, QRegExp::FixedString));
+}
+
+void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1)
+{
+    QSqlQueryModel *model_city = new QSqlQueryModel;
+    model_city->setQuery(QString("SELECT reg_obl_city.city FROM reg_obl_city WHERE reg_obl_city.region=\"%1\" ORDER BY reg_obl_city.city ASC").arg(arg1));
+
+    ui->comboBox_2->setModel(model_city);
+    ui->comboBox_2->setModelColumn(0);
 }

@@ -9,9 +9,6 @@ int main(int argc, char *argv[])
     a.setOrganizationName("LRI");
     a.setApplicationName("dbms-v5");
 
-    MainWindow w;
-    w.show();
-
     QSettings settings;
     settings.setValue("wrongway", false);
     settings.beginGroup("DbConnection");
@@ -23,6 +20,9 @@ int main(int argc, char *argv[])
     db.setDatabaseName(settings.value("DatabaseName").toString());
     settings.endGroup();
     bool ok = db.open();
+
+    MainWindow w;
+    w.show();
 
     if(!ok) w.on_actionDB_Connection_Params_triggered();
 

@@ -38,6 +38,8 @@ private slots:
     void on_tableView_doubleClicked(const QModelIndex &index);
     void on_filter_textChanged(const QString &arg1);
 
+    void on_comboBox_currentIndexChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
 
