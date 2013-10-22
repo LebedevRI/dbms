@@ -16,11 +16,13 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     dbconnparams.cpp \
-    addnewexpert.cpp
+    addnewexpert.cpp \
+    mysortfilterproxymodel.cpp
 
 HEADERS  += mainwindow.h \
     dbconnparams.h \
-    addnewexpert.h
+    addnewexpert.h \
+    mysortfilterproxymodel.h
 
 FORMS    += mainwindow.ui \
     dbconnparams.ui \
