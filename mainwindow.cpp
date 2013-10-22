@@ -249,3 +249,17 @@ void MainWindow::on_comboBox_currentIndexChanged(const QString &arg1)
     ui->comboBox_2->setModel(model_city);
     ui->comboBox_2->setModelColumn(0);
 }
+
+void MainWindow::on_pushButton_clicked()
+{
+    ui->checkBox->setCheckState(Qt::Unchecked);
+    ui->checkBox_2->setCheckState(Qt::Unchecked);
+    ui->checkBox_3->setCheckState(Qt::Unchecked);
+    ui->checkBox_4->setCheckState(Qt::Unchecked);
+
+    ui->lineEdit->setText("");
+    ui->lineEdit_2->setText("");
+
+    ui->comboBox->setCurrentIndex(0);
+    ui->comboBox_2->setCurrentIndex(0);
+}
