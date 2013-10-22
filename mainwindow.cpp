@@ -4,6 +4,7 @@
 #include <QSqlDatabase>
 #include <QSqlQuery>
 #include <QSqlQueryModel>
+#include <QSortFilterProxyModel>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
@@ -46,7 +47,14 @@ void MainWindow::on_actionView_triggered()
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     model->select();
     model->removeColumn(0); // don't show the ID
-    ui->tableView->setModel(model);
+
+    QSortFilterProxyModel *proxy_model = new QSortFilterProxyModel();
+    proxy_model->setFilterKeyColumn(-1);
+    proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    proxy_model->setDynamicSortFilter(true);
+    proxy_model->setSourceModel(model);
+
+    ui->tableView->setModel(proxy_model);
     ui->tableView->resizeColumnsToContents();
     ui->tableView->resizeRowsToContents();
 }
@@ -58,7 +66,14 @@ void MainWindow::on_actionView_2_triggered()
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     model->select();
     model->removeColumn(0); // don't show the ID
-    ui->tableView->setModel(model);
+
+    QSortFilterProxyModel *proxy_model = new QSortFilterProxyModel();
+    proxy_model->setFilterKeyColumn(-1);
+    proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    proxy_model->setDynamicSortFilter(true);
+    proxy_model->setSourceModel(model);
+
+    ui->tableView->setModel(proxy_model);
     ui->tableView->resizeColumnsToContents();
     ui->tableView->resizeRowsToContents();
 }
@@ -70,7 +85,14 @@ void MainWindow::on_actionView_3_triggered()
     model->setEditStrategy(QSqlTableModel::OnManualSubmit);
     model->select();
     model->removeColumn(0); // don't show the ID
-    ui->tableView->setModel(model);
+
+    QSortFilterProxyModel *proxy_model = new QSortFilterProxyModel();
+    proxy_model->setFilterKeyColumn(-1);
+    proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
+    proxy_model->setDynamicSortFilter(true);
+    proxy_model->setSourceModel(model);
+
+    ui->tableView->setModel(proxy_model);
     ui->tableView->resizeColumnsToContents();
     ui->tableView->resizeRowsToContents();
 }
@@ -179,4 +201,9 @@ void MainWindow::on_tableView_doubleClicked(const QModelIndex &index)
     ane->show();
     ane->raise();
     ane->activateWindow();
+}
+
+void MainWindow::on_filter_textChanged(const QString &arg1)
+{
+    dynamic_cast<QSortFilterProxyModel*>(ui->tableView->model())->setFilterRegExp(QRegExp(ui->filter->text(), Qt::CaseInsensitive, QRegExp::FixedString));
 }

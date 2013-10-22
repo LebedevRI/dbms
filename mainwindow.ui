@@ -24,7 +24,11 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QLineEdit" name="filter"/>
+       <widget class="QLineEdit" name="filter">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
       </item>
       <item>
        <widget class="QTableView" name="tableView">

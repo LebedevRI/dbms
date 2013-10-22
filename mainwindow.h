@@ -36,6 +36,7 @@ private slots:
     void on_actionAdd_new_expert_triggered();
 
     void on_tableView_doubleClicked(const QModelIndex &index);
+    void on_filter_textChanged(const QString &arg1);
 
 private:
     Ui::MainWindow *ui;
