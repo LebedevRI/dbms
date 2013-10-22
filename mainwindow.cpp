@@ -49,6 +49,7 @@ void MainWindow::on_actionView_triggered()
     model->removeColumn(0); // don't show the ID
 
     QSortFilterProxyModel *proxy_model = new QSortFilterProxyModel();
+    proxy_model->invalidate();
     proxy_model->setFilterKeyColumn(-1);
     proxy_model->setFilterCaseSensitivity(Qt::CaseInsensitive);
     proxy_model->setDynamicSortFilter(true);
@@ -196,11 +197,29 @@ void MainWindow::on_tableView_doubleClicked(const QModelIndex &index)
     QSettings settings;
     settings.setValue("wrongway", model->data(model->index(row, 0), Qt::DisplayRole));
 
-    addnewexpert *ane = new addnewexpert(this);
+    addnewexpert ane(this);
+    ane.setModal(true);
+    ane.show();
+    ane.raise();
+    ane.activateWindow();
+    ane.exec();
 
-    ane->show();
-    ane->raise();
-    ane->activateWindow();
+// --------------
+
+    this->on_actionView_triggered();
+    dynamic_cast<QSortFilterProxyModel*>(ui->tableView->model())->invalidate();
+
+    for(int i = 0; i < ui->tableView->model()->rowCount(); ++i)
+    {
+        if(ui->tableView->model()->data(ui->tableView->model()->index(i, 0), 0).toInt() == settings.value("wrongway").toInt())
+        {
+            ui->tableView->selectionModel()->setCurrentIndex(ui->tableView->model()->index(i, 0), QItemSelectionModel::SelectCurrent);
+            ui->tableView->scrollTo(model->index(i, 0));
+            break;
+        }
+    }
+
+    settings.setValue("wrongway", false);
 }
 
 void MainWindow::on_filter_textChanged(const QString &arg1)

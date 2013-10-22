@@ -65,8 +65,6 @@ addnewexpert::addnewexpert(QWidget *parent) :
 
 addnewexpert::~addnewexpert()
 {
-    QSettings settings;
-    settings.setValue("wrongway", false);
     delete ui;
 }
 
@@ -96,11 +94,12 @@ bool addnewexpert::reallyQuit()
 void addnewexpert::accept()
 {
     QSettings settings;
+    settings.setValue("wrongway", ui->lineEdit->text().toInt());
     if(ui->checkBox->isHidden())
     {
         QSqlDatabase::database().transaction();
         QSqlQuery query;
-        query.prepare("INSERT INTO expert VALUES(NULL,:kod,:name,:region,:city,:grnti,:key_words,:take_part,:input_date);");
+        query.prepare("INSERT INTO expert VALUES(NULL,:kod,:name,:region,:city,:grnti,:key_words,:input_date);");
         query.bindValue(":kod", ui->lineEdit->text());
         query.bindValue(":name", ui->lineEdit_2->text());
         query.bindValue(":region", ui->comboBox->currentText());
@@ -124,14 +123,13 @@ void addnewexpert::accept()
                 query.exec();
                 QSqlDatabase::database().commit();
 
-                settings.setValue("wrongway", false);
                 this->setResult(QDialog::Accepted);
                 this->close();
             }
         } else {
             QSqlDatabase::database().transaction();
             QSqlQuery query;
-            query.prepare("UPDATE expert SET kod=:kod,name=:name,region=:region,city=:city,grnti=:grnti,key_words=:key_words,take_part=:take_part,input_date=:input_date WHERE kod=:kod_where;");
+            query.prepare("UPDATE expert SET kod=:kod,name=:name,region=:region,city=:city,grnti=:grnti,key_words=:key_words,input_date=:input_date WHERE kod=:kod_where;");
             query.bindValue(":kod", ui->lineEdit->text());
             query.bindValue(":name", ui->lineEdit_2->text());
             query.bindValue(":region", ui->comboBox->currentText());
@@ -143,7 +141,6 @@ void addnewexpert::accept()
             query.exec();
             QSqlDatabase::database().commit();
 
-            settings.setValue("wrongway", false);
             this->setResult(QDialog::Accepted);
             this->close();
         };
