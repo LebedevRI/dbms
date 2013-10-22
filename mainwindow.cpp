@@ -167,11 +167,12 @@ void MainWindow::on_actionCheck_fix_data_triggered()
     QSqlDatabase db = QSqlDatabase::database();
     QSqlDatabase::database().transaction();
 
+    QSqlQuery query;
     //Update ALL regions in expert table
-    //query.exec("UPDATE expert,reg_obl_city SET expert.region=reg_obl_city.region WHERE expert.city=reg_obl_city.city;");
+    query.exec("UPDATE expert,reg_obl_city SET expert.region=reg_obl_city.region WHERE expert.city=reg_obl_city.city;");
 
     //Only fix missing
-    QSqlQuery query("UPDATE expert,reg_obl_city SET expert.region=reg_obl_city.region WHERE expert.region="" AND expert.city=reg_obl_city.city;");
+    //query.exec("UPDATE expert,reg_obl_city SET expert.region=reg_obl_city.region WHERE expert.region=`` AND expert.city=reg_obl_city.city;");
 
     QSqlTableModel *model = new QSqlTableModel(0, db);
     model->setTable("expert");
